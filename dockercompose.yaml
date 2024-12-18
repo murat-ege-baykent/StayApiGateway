@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  APIGateway:
+    build:
+      context: ./APIGateway
+    ports:
+      - "6000:80"  # Map port 6000 on host to port 80 in the container
+    depends_on:
+      - StayApi
+      - ServiceA
+    networks:
+      - my-network
+
+  StayApi:
+    build:
+      context: ./StayApi
+    ports:
+      - "6001:80"  # Map port 6001 on host to port 80 in the container
+    networks:
+      - my-network
+
+  ServiceA:
+    build:
+      context: ./WebService
+    ports:
+      - "6002:80"  # Map port 6002 on host to port 80 in the container
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge
